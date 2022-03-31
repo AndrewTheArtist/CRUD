@@ -12,14 +12,14 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DataSourceFactory {
 
+public class DataSourceFactory {
     private final DataSource daso;
     private static final Logger LOGGER = Logger.getLogger(DataSourceFactory.class.getName());
 
     DataSourceFactory(){
 
-        MysqlDataSource daso = new MysqlDataSource();
+        MysqlDataSource daso = new MysqlDatasource();
         String rootPath =
                 Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("database.properties")).getPath();
         InputStream input = null;

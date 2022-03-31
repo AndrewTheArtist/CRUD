@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Dao<T, ID>{
-    Optional<T> find(ID id) throws SQLException;
+    Optional<T> find(ID id) throws SQLException, Exception;
 
     List<T> findAll() throws SQLException;
 
