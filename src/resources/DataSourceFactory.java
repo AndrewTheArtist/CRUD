@@ -1,5 +1,7 @@
 package resources;
 
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
 import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,7 +21,7 @@ public class DataSourceFactory {
 
     DataSourceFactory(){
 
-        MysqlDataSource daso = new MysqlDatasource();
+        MysqlDataSource daso = new MysqlDataSource();
         String rootPath =
                 Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResource("database.properties")).getPath();
         InputStream input = null;

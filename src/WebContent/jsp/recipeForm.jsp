@@ -15,42 +15,25 @@
                     <div class="mdl-card mdl-shadow-6dp">
                         <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
                             <h2 class="mdl-card__title-text">
-                                <c:if test="${cake != null}">Edit Cake</c:if>
-                                <c:if test="${cake == null}">Add new Cake</c:if>
+                                <c:if test="${recipe != null}">Edit Recipe</c:if>
+                                <c:if test="${recipe == null}">Add new Recipe</c:if>
                             </h2>
                         </div>
                         <div class="mdl-card__supporting-text">
-                            <c:if test="${cake != null}"><form name="myForm" action="update" method="post" onsubmit="return validateForm()"></c:if>
-                            <c:if test="${cake == null}"><form name="myForm" action="insert" method="post" onsubmit="return validateForm()"></c:if>
-                            <c:if test="${cake != null}"><input type="hidden" name="id" value="<:out value='${cake.id}'/>"/></c:if>
+                            <c:if test="${recipe != null}"><form name="myForm" action="update" method="post" onsubmit="return validateForm()"></c:if>
+                            <c:if test="${recipe == null}"><form name="myForm" action="insert" method="post" onsubmit="return validateForm()"></c:if>
+                            <c:if test="${recipe != null}"><input type="hidden" name="id" value="<:out value='${recipe.id}'/>"/></c:if>
 
                             <div class="mdl-textfield mdl-js-textfield">
                                 <input class="mdl-textfield__input" type="text" name="name"
-                                    value="<c:out value='${cake.name}' /> " id="name" />
+                                    value="<c:out value='${recipe.name}' /> " id="name" />
                                 <label class="mdl-textfield__label" for="name">Name</label>
                             </div>
 
                             <div class="mdl-textfield mdl-js-textfield">
                                 <input class="mdl-textfield__input" type="text" name="description"
-                                    value="<c:out value='${cake.description}' /> " id="description" />
+                                    value="<c:out value='${recipe.description}' /> " id="description" />
                                 <label class="mdl-textfield__label" for="description">Description</label>
-                            </div>
-
-                            <div class="mdl-textfield mdl-js-textfield">
-                                <c:choose>
-                                    <c:when test = "${cake != null}">
-                                        <input class="mdl-textfield__input" type="text" name="quantity" value="<:out value='${cake.quantity}' />" id="quantity" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <input class="mdl-textfield__input" type="text" name="quantity" value="<:out value='1' />" id="quantity" />
-                                    </c:otherwise>
-                                </c:choose>
-                                <label class="mdl-textfield__label" for="quantity">Quantity</label>
-                            </div>
-
-                            <div class="mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="text" name="location" value="<c:out value='${cake.location}' />" id="location" />
-                                <label class="mdl-textfield__label" for="location">Location</label>
                             </div>
 
                             <input type="submit" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" value="save">
