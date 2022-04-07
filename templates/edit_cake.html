@@ -1,0 +1,17 @@
+<!doctype html>
+<title>Edit Cake</title>
+<h2>Edit Cake</h2>
+<form method="post" action="/update_cake">
+    <dl>
+		<p>
+			<input name="inputName" value="{{ row['cake_name'] }}" type="text" placeholder="Name" autocomplete="off" required>
+		</p>
+		<p>
+			<input name="inputRecipe" value="{{ row['recipe_id'] }}" type="text" placeholder="Recipe" autocomplete="off" required>
+		</p>
+    </dl>
+    <p>
+		<input name="id" value="{{ row['recipe_id'] }}" type="hidden">
+		<input type="submit" value="Submit">
+	</p>
+</form>
