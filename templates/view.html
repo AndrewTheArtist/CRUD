@@ -2,7 +2,7 @@
 <title>List of cakes</title>
 
 <p><a href="{{ url_for('.add_cake_view') }}"> Add Cake </a></p>
-<p><a href="{{ url_for('.add_recipe_view') }}"> Add Recipe </a></p>
+<p><a href="{{ url_for('.add_chef_view') }}"> Add Chef </a></p>
 
 <p>
 	{% with messages = get_flashed_messages() %}
@@ -18,5 +18,5 @@
 
 <h2>Cakes</h2>
 {{ cake_table }}
-<h2>Recipes</h2>
-{{ recipe_table }}
+<h2>Chefs</h2>
+{{ chef_table }}

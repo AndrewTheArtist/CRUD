@@ -1,7 +1,7 @@
 import pymysql
 import pymysql.cursors
 from app import app
-from tables import CakeResults, RecipeResults
+from tables import CakeResults, ChefResults
 from db_config import mysql
 from flask import flash, render_template, request, redirect
 
@@ -23,7 +23,7 @@ def add_cake():
         # validate the received values
         if _name and _recipe and request.method == 'POST':
             # save edits
-            sql = "INSERT INTO cake(cake_name, recipe_id) VALUES(%s, %s)"
+            sql = "INSERT INTO cake(cake_name, recipe) VALUES(%s, %s)"
             data = (_name, _recipe)
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -53,12 +53,12 @@ def view():
         cake_table = CakeResults(rows)
         cake_table.border = True
 
-        cursor.execute("SELECT * FROM recipe")
+        cursor.execute("SELECT * FROM chef")
         rows = cursor.fetchall()
-        recipe_table = RecipeResults(rows)
-        recipe_table.border = True
+        chef_table = ChefResults(rows)
+        chef_table.border = True
 
-        return render_template('view.html', cake_table=cake_table, recipe_table=recipe_table)
+        return render_template('view.html', cake_table=cake_table, chef_table=chef_table)
     except Exception as e:
         print(e)
     finally:
@@ -97,7 +97,7 @@ def update_cake():
         # validate the received values
         if _name and _recipe and _id and request.method == 'POST':
             # save edits
-            sql = "UPDATE cake SET cake_name=%s, recipe_id=%s WHERE cake_id=%s"
+            sql = "UPDATE cake SET cake_name=%s, recipe=%s WHERE cake_id=%s"
             data = (_name, _recipe, _id,)
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -132,34 +132,35 @@ def delete_cake(id):
         conn.close()
 
 
-# RECIPE ROUTES
+# CHEF ROUTES
 
 
-@app.route('/new_recipe')
-def add_recipe_view():
-    return render_template('add_recipe.html')
+@app.route('/new_chef')
+def add_chef_view():
+    return render_template('add_chef.html')
 
 
-@app.route('/add_recipe', methods=['POST'])
-def add_recipe():
+@app.route('/add_chef', methods=['POST'])
+def add_chef():
     conn = None
     cursor = None
     try:
-        _ingredients = request.form['inputIngredients']
-        _desc = request.form['inputDescription']
+        _name = request.form['inputName']
+        _contact = request.form['inputContact']
+        _cakes = request.form['inputCakes']
         # validate the received values
-        if _ingredients and _desc and request.method == 'POST':
+        if _contact and _cakes and request.method == 'POST':
             # save edits
-            sql = "INSERT INTO recipe(ingredients, description) VALUES(%s, %s)"
-            data = (_ingredients, _desc)
+            sql = "INSERT INTO chef(chef_name, contact, best_cakes) VALUES(%s, %s, %s)"
+            data = (_name, _contact, _cakes)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-            flash('Recipe added successfully!')
+            flash('Chef added successfully!')
             return redirect('/')
         else:
-            return 'Error while adding recipe'
+            return 'Error while adding chef'
     except Exception as e:
         print(e)
     finally:
@@ -167,17 +168,17 @@ def add_recipe():
         conn.close()
 
 
-@app.route('/edit_recipe/<int:id>')
-def edit_recipe(id):
+@app.route('/edit_chef/<int:id>')
+def edit_chef(id):
     conn = None
     cursor = None
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM recipe WHERE recipe_id=%s", id)
+        cursor.execute("SELECT * FROM chef WHERE chef_id=%s", id)
         row = cursor.fetchone()
         if row:
-            return render_template('edit_recipe.html', row=row)
+            return render_template('edit_chef.html', row=row)
         else:
             return 'Error loading #{id}'.format(id=id)
     except Exception as e:
@@ -187,27 +188,28 @@ def edit_recipe(id):
         conn.close()
 
 
-@app.route('/update_recipe', methods=['POST'])
-def update_recipe():
+@app.route('/update_chef', methods=['POST'])
+def update_chef():
     conn = None
     cursor = None
     try:
-        _ingredients = request.form['inputIngredients']
-        _desc = request.form['inputDescription']
+        _name = request.form['inputName']
+        _contact = request.form['inputContact']
+        _cakes = request.form['inputCakes']
         _id = request.form['id']
         # validate the received values
-        if _ingredients and _desc and _id and request.method == 'POST':
+        if _name and _contact and _cakes and _id and request.method == 'POST':
             # save edits
-            sql = "UPDATE recipe SET ingredients=%s, description=%s WHERE recipe_id=%s"
-            data = (_ingredients, _desc, _id,)
+            sql = "UPDATE chef SET chef_name=%s, contact=%s, best_cakes=%s WHERE chef_id=%s"
+            data = (_name, _contact, _cakes, _id,)
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(sql, data)
             conn.commit()
-            flash('Recipe updated successfully!')
+            flash('Chef updated successfully!')
             return redirect('/')
         else:
-            return 'Error while updating recipe'
+            return 'Error while updating chef'
     except Exception as e:
         print(e)
     finally:
@@ -215,16 +217,16 @@ def update_recipe():
         conn.close()
 
 
-@app.route('/delete_recipe/<int:id>')
-def delete_recipe(id):
+@app.route('/delete_chef/<int:id>')
+def delete_chef(id):
     conn = None
     cursor = None
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM recipe WHERE recipe_id=%s", (id,))
+        cursor.execute("DELETE FROM chef WHERE chef_id=%s", (id,))
         conn.commit()
-        flash('Recipe deleted successfully!')
+        flash('Chef deleted successfully!')
         return redirect('/')
     except Exception as e:
         print(e)
