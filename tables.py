@@ -10,7 +10,7 @@ class CakeResults(Table):
 
 
 class ChefResults(Table):
-    chef_id = Col('Id')
+    chef_id = Col('Id', show=False)
     chef_name = Col('Name')
     contact = Col('Contact')
     best_cakes = Col('Best Cakes')
